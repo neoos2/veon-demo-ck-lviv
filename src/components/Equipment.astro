@@ -1,0 +1,63 @@
+---
+// #kliniky-tekhnika: one large photo to the screen edge + a "specification" list (C-006, C-007). No icons, no counters.
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import { equipment } from "../data/site";
+---
+<Section id="kliniky-tekhnika" rec="R-007" class="section equip">
+  <div class="equip__grid">
+    <figure class="equip__photo">
+      <picture>
+        <source media="(max-width: 767px)" type="image/webp" srcset="img/microscope-m-640.webp 640w, img/microscope-m-960.webp 960w" sizes="100vw" width="960" height="720" />
+        <img
+          src="img/microscope-838.webp"
+          srcset="img/microscope-560.webp 560w, img/microscope-838.webp 838w"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          width="838"
+          height="1047"
+          alt="Лікар клініки працює за стоматологічним мікроскопом"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+    </figure>
+    <div class="equip__text">
+      <h2 class="h2">Обладнання і безпека в обох клініках</h2>
+      <dl class="spec">
+        {equipment.map((e) => (
+          <div class="spec__row">
+            <dt>{e.term}</dt>
+            <dd>{e.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <FutureLink note="Розділ у розробці">Про клініку</FutureLink>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .equip__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+  .equip__photo { margin: 0; background: var(--color-surface); }
+  .equip__photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .equip__text { width: min(100% - 2 * var(--space), var(--container)); margin-inline: auto; display: grid; gap: var(--s-4); justify-items: start; }
+  .spec { margin: 0; width: 100%; border-top: 1px solid var(--color-text); }
+  .spec__row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding-block: var(--s-2); border-bottom: var(--line); }
+  .spec dt { font-weight: 600; }
+  .spec dd { margin: 0; color: var(--color-text-muted); }
+
+  @media (min-width: 768px) {
+    .spec__row { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--gap); }
+  }
+  @media (min-width: 1024px) {
+    /* photo runs to the left screen edge (7 cols), text sits in the right 5 cols of the 1200px grid */
+    .equip__grid {
+      grid-template-columns: minmax(var(--space), 1fr) repeat(12, minmax(0, calc(var(--container) / 12 - var(--gap) * 11 / 12))) minmax(var(--space), 1fr);
+      column-gap: var(--gap);
+      align-items: center;
+    }
+    .equip__photo { grid-column: 1 / span 7; }
+    .equip__photo img { aspect-ratio: 4 / 5; max-height: 820px; }
+    .equip__text { grid-column: 9 / span 5; width: auto; margin: 0; }
+  }
+</style>

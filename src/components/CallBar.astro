@@ -1,0 +1,49 @@
+---
+// Fixed call bar on phones (R-001, R-016): appears after the first screen, hides over the footer (Effect 5).
+import { clinics } from "../data/site";
+---
+<nav class="callbar" aria-label="Зателефонувати в клініку" data-callbar data-rec="R-001,R-016,GA-R003">
+  {clinics.map((c) => (
+    <a class="callbar__btn" href={`tel:${c.phone}`}>
+      <span class="callbar__street"><span class="visually-hidden">Зателефонувати на вул. </span>{c.street.split(",")[0]}</span>
+      <span class="callbar__num num">{c.phoneDisplay.replace("+38 ", "")}</span>
+    </a>
+  ))}
+</nav>
+
+<style>
+  .callbar { display: none; }
+  @media (max-width: 767px) {
+    .callbar {
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 40;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
+      padding: 0 0 env(safe-area-inset-bottom);
+      background: var(--color-primary);
+      transition: transform 240ms var(--ease-out);
+    }
+    :global( .js) .callbar:not(.is-shown) { transform: translateY(110%); }
+  }
+  .callbar__btn {
+    display: grid;
+    align-content: center;
+    min-height: 64px;
+    padding: 4px var(--space);
+    color: var(--color-on-primary);
+    text-decoration: none;
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: background-color var(--dur-fast) var(--ease-out), transform 100ms var(--ease-out);
+  }
+  .callbar__btn + .callbar__btn { border-left: 1px solid var(--color-on-deep-muted); }
+  .callbar__btn:active { background: var(--color-primary-hover); }
+  .callbar__btn:focus-visible { outline: 3px solid var(--color-accent); outline-offset: -3px; }
+  .callbar__street { font-weight: 600; font-size: 1rem; }
+  .callbar__num { font-size: 0.875rem; }
+  @media (prefers-reduced-motion: reduce) {
+    .callbar, :global( .js) .callbar:not(.is-shown) { transition: none; }
+  }
+</style>

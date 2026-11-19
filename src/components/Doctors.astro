@@ -1,0 +1,174 @@
+---
+// #likari (signature): the founder opens, then a name index of every doctor from the clinic's site with years of practice.
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import { doctors, yearsWord } from "../data/site";
+const first = doctors.find((d) => d.photo) ?? doctors[0];
+const label = (d: (typeof doctors)[number]) => `${d.name} ${d.given}`;
+---
+<Section id="likari" rec="R-007" class="section doctors">
+  <div class="container">
+    <h2 class="h2 doctors__title">Лікарі, яких відібрав засновник</h2>
+
+    <div class="founder">
+      <figure class="founder__photo">
+        <img
+          src="img/founder-400.webp"
+          srcset="img/founder-400.webp 400w, img/founder-662.webp 662w"
+          sizes="(min-width: 1024px) 360px, (min-width: 768px) 40vw, 100vw"
+          width="662"
+          height="819"
+          alt="Сергій Копитко, засновник і головний лікар, з артикулятором у руках"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="founder__text">
+        <blockquote class="founder__quote">
+          <p>Кожного лікаря особисто відбирав власник клініки, перевіряючи професійні якості майбутніх представників Стоматологічної клініки Доктора Копитко.</p>
+          <p>Наша клініка — це якісне обслуговування за демократичною ціною, підкріплене особистою гарантією засновника.</p>
+        </blockquote>
+        <p class="founder__who">
+          <span class="founder__name">Копитко Сергій Олександрович</span>
+          <span class="founder__role">Засновник і головний лікар, стоматолог вищої категорії, стаж <span class="num">24 роки</span></span>
+        </p>
+      </div>
+    </div>
+
+    <p class="strip-hint">Гортайте вбік, щоб побачити всіх лікарів.</p>
+    <div class="index">
+      <ul class="index__list" role="list" aria-label="Лікарі клініки">
+        {doctors.map((d) => (
+          <li class="dr" data-dr={d.photo ?? `ph-${d.initials}`} data-dr-label={label(d)}>
+            <span class="dr__thumb" aria-hidden="true">
+              {d.photo
+                ? <img src={`img/dr-${d.photo}-120.webp`} srcset={`img/dr-${d.photo}-120.webp 120w, img/dr-${d.photo}-480.webp 480w`} sizes="(max-width: 767px) 152px, 56px" width="120" height="120" alt="" loading="lazy" decoding="async" />
+                : <span class="dr__initials">{d.initials}</span>}
+            </span>
+            <span class="dr__main">
+              <h3 class="dr__name"><FutureLink note="Розділ у розробці">{d.name}{" "}<span class="dr__given">{d.given}</span></FutureLink></h3>
+              <span class="dr__role">{d.role}</span>
+            </span>
+            <span class="dr__years"><span class="num dr__years-n">{d.years}</span> <span class="dr__years-w">{yearsWord(d.years)}</span></span>
+          </li>
+        ))}
+      </ul>
+
+      <figure class="frame" aria-hidden="true" data-dr-frame>
+        <div class="frame__box">
+          {doctors.map((d) => (
+            <div class:list={["frame__shot", { "is-active": d === first }]} data-dr-shot={d.photo ?? `ph-${d.initials}`}>
+              {d.photo
+                ? <img src={`img/dr-${d.photo}-480.webp`} width="480" height="480" alt="" loading="lazy" decoding="async" />
+                : <span class="frame__initials">{d.initials}<span class="frame__note">фото лікаря від клініки</span></span>}
+            </div>
+          ))}
+        </div>
+        <figcaption class="frame__cap" data-dr-caption>{label(first)}</figcaption>
+      </figure>
+    </div>
+    <p class="doctors__note">Стаж — як вказано на сайті клініки. <FutureLink note="Розділ у розробці">Сторінки лікарів</FutureLink></p>
+  </div>
+</Section>
+
+<style>
+  .doctors__title { margin-bottom: clamp(2rem, 1rem + 3vw, 4rem); }
+
+  .founder { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); margin-bottom: clamp(3rem, 2rem + 4vw, 6rem); }
+  .founder__photo { margin: 0; max-width: 360px; background: var(--color-bg); }
+  .founder__photo img { width: 100%; height: auto; }
+  .founder__quote { margin: 0; font-family: var(--font-display); font-size: clamp(1.375rem, 1.1rem + 0.9vw, 1.75rem); line-height: 1.35; font-weight: 400; color: var(--color-text); }
+  .founder__quote p { margin: 0 0 var(--s-2); max-width: 36ch; }
+  .founder__who { margin: var(--s-3) 0 0; display: grid; gap: 4px; padding-top: var(--s-2); border-top: 3px solid var(--color-primary); max-width: 36ch; }
+  .founder__name { font-weight: 600; }
+  .founder__role { color: var(--color-text-muted); font-size: var(--fs-small); }
+
+  .index { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+  .index__list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-text); }
+  .dr {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--s-2);
+    padding-block: var(--s-2);
+    border-bottom: var(--line);
+  }
+  .dr__thumb { width: 56px; height: 56px; overflow: hidden; background: var(--color-surface); display: grid; place-items: center; }
+  .dr__thumb img { width: 56px; height: 56px; object-fit: cover; }
+  .dr__initials { font-family: var(--font-display); font-weight: 600; color: var(--color-primary); font-size: 1.125rem; }
+  .dr__main { display: grid; min-width: 0; }
+  .dr__name { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: var(--fs-h3); line-height: 1.2; }
+  .dr__name :global(.future-link) { min-height: 0; color: var(--color-text); font-weight: 500; text-decoration: none; display: inline; cursor: default; }
+  .dr__name :global(.future-link:hover) { text-decoration: underline dashed; text-decoration-thickness: 1px; }
+  .dr__given { display: block; font-size: 0.7em; line-height: 1.3; color: var(--color-text-muted); }
+  .dr__role { font-size: var(--fs-small); color: var(--color-text-muted); }
+  .dr__years { text-align: right; line-height: 1; white-space: nowrap; }
+  .dr__years-n { display: block; font-family: var(--font-body); font-weight: 600; font-size: clamp(1.75rem, 1.4rem + 1vw, 2.5rem); color: var(--color-primary); }
+  .dr__years-w { font-size: var(--fs-small); color: var(--color-text-muted); }
+  .doctors__note { margin: var(--s-3) 0 0; font-size: var(--fs-small); color: var(--color-text-muted); display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s-2); }
+
+  .frame { display: none; margin: 0; }
+  .strip-hint { display: none; }
+
+  /* phones: a horizontal strip of compact cards (ux/demo-home.md §7), the scrollbar shows progress */
+  @media (max-width: 767px) {
+    .index__list {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 152px;
+      gap: var(--s-2);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--space);
+      margin-inline: calc(var(--space) * -1);
+      padding: var(--s-2) var(--space) var(--s-3);
+      border-top: 0;
+      scrollbar-color: var(--color-primary) var(--color-surface);
+      scrollbar-width: thin;
+    }
+    .dr {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto 1fr auto;
+      align-items: start;
+      gap: var(--s-1);
+      padding: 0;
+      border-bottom: 0;
+      scroll-snap-align: start;
+    }
+    .dr__thumb, .dr__thumb img { width: 152px; height: 152px; }
+    .dr__initials { font-size: 2.5rem; }
+    .dr__main { gap: 2px; }
+    .dr__name { font-size: 1.25rem; }
+    .dr__years { text-align: left; display: flex; align-items: baseline; gap: var(--s-1); padding-top: var(--s-1); border-top: var(--line); }
+    .dr__years-n { display: inline; font-size: 1.75rem; }
+    .strip-hint { display: block; margin: 0 0 var(--s-1); font-size: var(--fs-small); color: var(--color-text-muted); }
+  }
+
+  @media (min-width: 768px) {
+    .founder { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: end; }
+    .founder__photo { grid-column: 1 / span 5; }
+    .founder__text { grid-column: 6 / span 7; }
+  }
+  @media (min-width: 1024px) {
+    .founder__photo { grid-column: 1 / span 4; }
+    .founder__text { grid-column: 6 / span 6; padding-bottom: var(--s-4); }
+    .index { grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; }
+    .index__list { grid-column: 1 / span 8; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap); }
+    .dr { grid-template-columns: minmax(0, 1fr) auto; }
+    .dr__thumb { display: none; }
+    .frame { grid-column: 9 / span 4; position: sticky; top: calc(var(--header-h) + var(--s-3)); }
+    :global( .js) .frame { display: block; }
+    .frame__box { position: relative; aspect-ratio: 1; background: var(--color-surface); border: var(--line); }
+    .frame__shot { position: absolute; inset: 0; transition: opacity 150ms var(--ease-out), transform 150ms var(--ease-out); }
+    :global( .js) .frame__shot:not(.is-active) { opacity: 0; transform: translateY(6px); }
+    .frame__shot.is-active { transition-duration: 200ms; }
+    .frame__shot img { width: 100%; height: 100%; object-fit: cover; }
+    .frame__initials { display: grid; place-content: center; gap: var(--s-1); width: 100%; height: 100%; text-align: center; font-family: var(--font-display); font-size: 5rem; font-weight: 600; color: var(--color-primary); line-height: 1; }
+    .frame__note { font-family: var(--font-body); font-size: var(--fs-small); font-weight: 400; color: var(--color-text-muted); }
+    .frame__cap { margin-top: var(--s-2); font-weight: 600; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .frame__shot, .frame__shot.is-active { transition: none; transform: none; }
+  }
+</style>

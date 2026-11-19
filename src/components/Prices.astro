@@ -1,0 +1,76 @@
+---
+// #tsiny: the one dark block of the page, a "sheet" from the signed price list (C-004).
+import Section from "./Section.astro";
+import ClinicButton from "./ClinicButton.astro";
+import FutureLink from "./FutureLink.astro";
+import { prices, clinics } from "../data/site";
+---
+<Section id="tsiny" rec="R-003" class="section prices">
+  <div class="container prices__grid">
+    <h2 class="h2 prices__title">Ціни з прейскуранта клініки</h2>
+    <ul class="prices__rows" role="list">
+      {prices.map((p, i) => (
+        <li class="prices__row" data-reveal style={`--reveal-delay:${i * 40}ms`}>
+          <span class="prices__name">{p.name}</span>
+          <span class="prices__sum num">{p.price}&nbsp;₴</span>
+        </li>
+      ))}
+    </ul>
+    <div class="prices__aside">
+      <div class="prices__act">
+        <p class="prices__ask">Запишіться в клініку, ближчу до вас:</p>
+        <div class="prices__doors" data-rec="R-001">
+          {clinics.map((c) => <ClinicButton clinic={c} tone="deep" />)}
+        </div>
+        <FutureLink note="Розділ у розробці" class="prices__all">Увесь прайс — 287 позицій</FutureLink>
+      </div>
+      <p class="prices__sign">Прейскурант дійсний з 1 вересня 2026 року. <span class="prices__signer">Копитко Сергій Олександрович</span></p>
+    </div>
+  </div>
+</Section>
+
+<style>
+  :global(.prices) { background: var(--color-deep); color: var(--color-on-primary); }
+  .prices__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+  .prices__title { color: var(--color-on-primary); }
+  .prices__rows { list-style: none; margin: 0; padding: 0; border-top: 3px solid var(--color-accent); --dur: 420ms; }
+  .prices__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-2);
+    padding-block: var(--s-2);
+    border-bottom: 1px solid var(--color-primary);
+  }
+  .prices__name { min-width: 0; }
+  .prices__sum { font-weight: 600; font-size: 1.25rem; color: var(--color-accent); }
+  .prices__aside { display: flex; flex-direction: column; gap: var(--s-4); }
+  .prices__act { display: grid; gap: var(--s-2); align-content: start; }
+  .prices__sign { order: -1; margin: 0; color: var(--color-on-deep-muted); font-size: var(--fs-small); }
+  .prices__signer { display: block; margin-top: 4px; font-family: var(--font-display); font-size: 1.375rem; font-weight: 500; color: var(--color-on-primary); }
+  .prices__ask { margin: 0; color: var(--color-on-deep-muted); }
+  .prices__doors { display: grid; gap: var(--s-1); }
+  :global(.prices .prices__all) { justify-self: start; color: var(--color-on-deep-muted); }
+  :global(.prices .prices__all:hover) { color: var(--color-on-primary); }
+  :global(.prices .future-link:focus-visible) { outline-color: var(--color-accent); }
+
+  /* Effect 3: the sheet fills in row by row (only once, only with JS; rows visible without it) */
+  :global( .js) .prices__row[data-reveal]:not(.is-visible) { transform: translateY(12px); }
+  @media (max-width: 767px) {
+    :global( .js) .prices__row[data-reveal]:not(.is-visible) { transform: translateY(8px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global( .js) .prices__row[data-reveal]:not(.is-visible) { transform: none; opacity: 1; }
+  }
+
+  @media (min-width: 1024px) {
+    .prices__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: var(--s-4); }
+    .prices__title { grid-column: 1 / -1; }
+    .prices__rows { grid-column: 1 / span 7; }
+    /* right column runs the full height of the sheet: action on top, the founder's signature level with the last row */
+    .prices__aside { grid-column: 9 / span 4; justify-content: space-between; padding-top: var(--s-2); border-top: 3px solid var(--color-accent); }
+    .prices__act { margin-block: auto; }
+    .prices__doors { gap: var(--s-2); }
+    .prices__sign { order: 0; padding-top: var(--s-2); border-top: 1px solid var(--color-primary); }
+  }
+</style>

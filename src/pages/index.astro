@@ -1,0 +1,50 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Services from "../components/Services.astro";
+import Prices from "../components/Prices.astro";
+import Doctors from "../components/Doctors.astro";
+import Equipment from "../components/Equipment.astro";
+import Clinics from "../components/Clinics.astro";
+import Footer from "../components/Footer.astro";
+import CallBar from "../components/CallBar.astro";
+import { clinics, email, socials } from "../data/site";
+
+const title = "Стоматологія у Львові з 2001 року — Dr.Kopytko, дві клініки";
+const description = "Сімейна стоматологія доктора Копитка: лікування, протезування, ортодонтія, імплантація, дитячий прийом. Болгарська, 4 і Кортумівка, 5. Ціни з прейскуранта.";
+
+// Dentist for each clinic (no opening hours: not confirmed, C-009; no Google rating markup).
+const org = { "@type": "Organization", "@id": "#org", name: "Стоматологічна клініка Dr.Kopytko", email, sameAs: socials.map((s) => s.url), foundingDate: "2001" };
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    org,
+    { "@type": "Person", "@id": "#founder", name: "Копитко Сергій Олександрович", jobTitle: "Засновник і головний лікар, лікар-стоматолог вищої категорії", worksFor: { "@id": "#org" } },
+    ...clinics.map((c) => ({
+      "@type": "Dentist",
+      "@id": `#${c.key}`,
+      name: `Стоматологічна клініка Dr.Kopytko — ${c.street}`,
+      telephone: c.phone,
+      email,
+      image: "img/team-wide-1024.webp",
+      address: { "@type": "PostalAddress", streetAddress: `вул. ${c.street}`, addressLocality: "Львів", addressCountry: "UA" },
+      hasMap: c.map,
+      parentOrganization: { "@id": "#org" },
+      founder: { "@id": "#founder" },
+    })),
+  ],
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <script slot="head" type="application/ld+json" is:inline data-rec="SE-R003" set:html={JSON.stringify(jsonLd)} />
+  <Header slot="header" />
+  <Hero />
+  <Services />
+  <Prices />
+  <Doctors />
+  <Equipment />
+  <Clinics />
+  <Footer slot="footer" />
+  <CallBar slot="footer" />
+</Base>

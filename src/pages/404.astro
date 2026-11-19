@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+<Base lang="uk" title="Сторінку не знайдено — Dr.Kopytko" description="Такої сторінки немає. Поверніться на головну стоматологічної клініки Dr.Kopytko.">
+  <Header slot="header" />
+  <section class="section">
+    <div class="container nf">
+      <h1 class="h2">Такої сторінки немає</h1>
+      <p>Поверніться на головну або зателефонуйте в клініку.</p>
+      <a class="text-link" href="./">На головну</a>
+    </div>
+  </section>
+  <Footer slot="footer" />
+</Base>
+<style>
+  .nf { display: grid; gap: var(--s-2); justify-items: start; }
+  .nf p { margin: 0; }
+</style>

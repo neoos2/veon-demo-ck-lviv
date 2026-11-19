@@ -1,0 +1,95 @@
+---
+import Section from "./Section.astro";
+import ClinicButton from "./ClinicButton.astro";
+import { clinics } from "../data/site";
+---
+<Section id="top" rec="R-002" class="hero">
+  <div class="container hero__grid">
+    <h1 class="hero__title" data-rec="SE-R002">Сімейна стоматологія доктора Копитка у&nbsp;Львові з&nbsp;2001&nbsp;року</h1>
+    <p class="hero__lead">Лікування, протезування, ортодонтія, імплантація і дитячий прийом у двох клініках — кожного лікаря особисто відбирав засновник, Сергій Копитко.</p>
+  </div>
+  <div class="container hero__doors" data-rec="R-001,R-009,GA-R003,GA-R005,MA-R001" data-hero-doors>
+    {clinics.map((c) => <ClinicButton clinic={c} class="hero__door" />)}
+  </div>
+  <figure class="hero__photo" data-rec="R-011,SE-R007,GA-R004">
+    <picture>
+      <source media="(max-width: 767px)" type="image/webp" srcset="img/team-m-480.webp 480w, img/team-m-800.webp 800w, img/team-m-1200.webp 1200w" sizes="100vw" width="1200" height="900" />
+      <img
+        src="img/team-wide-1024.webp"
+        srcset="img/team-wide-640.webp 640w, img/team-wide-1024.webp 1024w, img/team-wide-1563.webp 1563w"
+        sizes="(min-width: 1248px) 1200px, calc(100vw - 48px)"
+        width="1563"
+        height="710"
+        alt="Команда клініки Dr.Kopytko біля рецепції: лікарі в однаковій кобальтовій формі й адміністратори"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+  </figure>
+</Section>
+
+<style>
+  :global(.hero) { padding-top: clamp(1.5rem, 0.5rem + 4vw, 4rem); }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-2);
+  }
+  .hero__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--fs-h1);
+    line-height: var(--lh-tight);
+    letter-spacing: -0.01em;
+    font-variant-numeric: lining-nums;
+    font-optical-sizing: auto;
+    color: var(--color-text);
+    max-width: 16ch;
+  }
+  .hero__lead {
+    margin: 0;
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    max-width: 34ch;
+  }
+  .hero__doors {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-1);
+    margin-top: var(--s-3);
+  }
+  .hero__photo { margin: var(--s-4) 0 0; overflow: hidden; background: var(--color-surface); }
+  .hero__photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+
+  @media (min-width: 768px) {
+    .hero__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: end; }
+    .hero__title { grid-column: 1 / span 9; max-width: none; }
+    .hero__lead { grid-column: 10 / span 3; padding-bottom: 0.6em; }
+    .hero__doors { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); margin-top: var(--s-4); }
+    /* the panorama sits in the 1200px grid right under the clinic buttons: no face is covered or cut (2.2:1, y 0-710 of gal1) */
+    .hero__photo { width: min(100% - 2 * var(--space), var(--container)); margin: var(--s-1) auto 0; }
+    .hero__photo img { aspect-ratio: 1563 / 710; }
+  }
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .hero__title { grid-column: 1 / -1; }
+    .hero__lead { grid-column: 1 / span 8; padding-bottom: 0; }
+  }
+  @media (min-width: 1024px) {
+    .hero__doors { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .hero__doors > :global(.hero__door) { grid-column: span 4; }
+  }
+
+  /* Effect 1: the team photo settles in (transform only; LCP not delayed, no opacity change). */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__photo img { animation: hero-settle 900ms var(--ease-out) both; transform-origin: 50% 40%; }
+    @keyframes hero-settle { from { transform: scale(1.03); } to { transform: scale(1); } }
+    @media (max-width: 767px) {
+      .hero__photo img { animation-name: hero-settle-m; animation-duration: 700ms; }
+      @keyframes hero-settle-m { from { transform: scale(1.02); } to { transform: scale(1); } }
+    }
+  }
+</style>

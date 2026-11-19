@@ -1,0 +1,75 @@
+---
+// #posluhy: an index of six directions in rows (name, services, one real price from the price list), not cards.
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import { directions } from "../data/site";
+---
+<Section id="posluhy" rec="R-003" class="section services">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="h2">Шість напрямів — від огляду до імплантації</h2>
+      <p>Ціна в кожному рядку — з чинного прейскуранта клініки.</p>
+    </div>
+    <ol class="dirs" role="list">
+      {directions.map((d) => (
+        <li class="dir" id={d.id} data-dir>
+          <h3 class="dir__name">{d.name}</h3>
+          <p class="dir__price">
+            <span class="dir__price-label">{d.priceLabel}</span>
+            <span class="dir__price-sum num">{d.from ? "від " : ""}{d.price}&nbsp;₴</span>
+          </p>
+          <div class="dir__body">
+            <ul class="dir__list">
+              {d.items.map((i) => <li>{i}</li>)}
+            </ul>
+            <FutureLink note="Розділ у розробці" class="dir__more">{d.more}</FutureLink>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Section>
+
+<style>
+  .dirs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-text); }
+  .dir {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-1);
+    padding-block: var(--s-3);
+    border-bottom: var(--line);
+  }
+  .dir__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--fs-h3-lg);
+    line-height: var(--lh-head);
+  }
+  .dir__price { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 var(--s-2); }
+  .dir__price-label { font-size: var(--fs-small); color: var(--color-text-muted); }
+  .dir__price-sum { font-weight: 600; font-size: var(--fs-h3); color: var(--color-primary); }
+  .dir__body { display: grid; gap: var(--s-1); }
+  /* one service per line: a column of the document, never a wrapped tag cloud */
+  .dir__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; color: var(--color-text-muted); font-size: var(--fs-small); }
+  .dir :global(.dir__more) { justify-self: start; }
+
+  @media (min-width: 768px) {
+    .dir {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gap);
+      align-items: baseline;
+      padding-block: var(--s-4);
+    }
+    .dir__name { grid-column: 1 / span 5; grid-row: 1; }
+    .dir__body { grid-column: 1 / span 8; grid-row: 2; }
+    .dir__list { font-size: var(--fs-body); }
+    .dir__price { grid-column: 9 / span 4; grid-row: 1 / span 2; flex-direction: column; align-items: flex-end; align-self: start; text-align: right; }
+    .dir__price-sum { font-size: clamp(1.75rem, 1.2rem + 1.2vw, 2.5rem); line-height: 1.1; }
+  }
+  @media (min-width: 1024px) {
+    .dir__name { grid-column: 1 / span 4; grid-row: 1 / span 2; }
+    .dir__body { grid-column: 5 / span 5; grid-row: 1 / span 2; }
+    .dir__price { grid-column: 10 / span 3; }
+  }
+</style>

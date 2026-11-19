@@ -1,0 +1,69 @@
+---
+// #kliniky: two equal halves, the street in a large set, phone, route, Google rating of that clinic, what is there.
+import Section from "./Section.astro";
+import FutureLink from "./FutureLink.astro";
+import { clinics, email, socials } from "../data/site";
+---
+<Section id="kliniky" rec="R-005" class="section section--surface clinics">
+  <div class="container">
+    <h2 class="h2 clinics__title">Дві клініки — оберіть ближчу</h2>
+    <div class="clinics__grid">
+      {clinics.map((c) => (
+        <article class="clinic">
+          <h3 class="clinic__street">{c.street}</h3>
+          <p class="clinic__addr">{c.address}</p>
+          <a class="clinic__phone num" href={`tel:${c.phone}`} data-rec="R-001">{c.phoneDisplay}</a>
+          <ul class="clinic__links" role="list">
+            <li><a class="text-link" href={c.map} rel="noopener">Маршрут на карті</a></li>
+            <li><a class="text-link clinic__rating" href={c.map} rel="noopener" data-rec="R-009">Google {c.rating} з 5, {c.reviews}</a></li>
+          </ul>
+          <p class="clinic__here"><span class="clinic__here-t">Тут:</span> {c.here.join(", ")}.</p>
+          <p class="clinic__hours">Графік роботи уточнюйте телефоном.</p>
+        </article>
+      ))}
+    </div>
+    <div class="clinics__alt" data-rec="R-012">
+      <p>Зручніше написати? <a class="text-link" href={`mailto:${email}`}>{email}</a></p>
+      <ul role="list">
+        {socials.map((s) => <li><a class="text-link" href={s.url} rel="noopener">{s.name}</a></li>)}
+        <li><FutureLink note="Розділ у розробці">Онлайн-запис</FutureLink></li>
+      </ul>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .clinics__title { margin-bottom: clamp(2rem, 1rem + 3vw, 4rem); }
+  .clinics__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  .clinic { display: grid; align-content: start; gap: var(--s-1); padding-top: var(--s-3); border-top: 3px solid var(--color-primary); }
+  .clinic__street { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-street); line-height: 1.05; font-variant-numeric: lining-nums; }
+  .clinic__addr { margin: 0; color: var(--color-text-muted); }
+  .clinic__phone {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+    text-decoration-color: var(--color-border);
+    transition: color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
+  }
+  .clinic__phone:hover { color: var(--color-primary-hover); text-decoration-color: var(--color-primary-hover); }
+  .clinic__phone:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .clinic__links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 var(--s-3); }
+  .clinic__here, .clinic__hours { margin: 0; }
+  .clinic__here-t { font-weight: 600; }
+  .clinic__hours { color: var(--color-text-muted); font-size: var(--fs-small); }
+
+  .clinics__alt { margin-top: var(--s-6); padding-top: var(--s-3); border-top: var(--line); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-4); }
+  .clinics__alt p { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--s-1); }
+  .clinics__alt ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 var(--s-3); }
+
+  @media (min-width: 768px) {
+    .clinics__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+  }
+</style>

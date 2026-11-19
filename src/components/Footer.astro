@@ -1,0 +1,74 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { clinics, email, socials, nav } from "../data/site";
+const future = ["Послуги", "Ціни", "Лікарі", "Про клініку", "Блог «Догляд за зубами»", "Контакти", "Політика конфіденційності"];
+---
+<footer class="ftr" id="kontakty">
+  <div class="container ftr__grid">
+    <a class="ftr__logo" href="#top" aria-label="Стоматологічна клініка Dr.Kopytko, на початок сторінки">
+      <img src="img/logo-full-360.webp" width="360" height="314" alt="" loading="lazy" decoding="async" />
+    </a>
+
+    <div class="ftr__col">
+      <h2 class="ftr__h">Клініки</h2>
+      <ul role="list" class="ftr__list" data-rec="R-001">
+        {clinics.map((c) => (
+          <li>
+            <span class="ftr__addr">{c.address}</span>
+            <a class="ftr__link num" href={`tel:${c.phone}`}>{c.phoneDisplay}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="ftr__col">
+      <h2 class="ftr__h">Написати</h2>
+      <ul role="list" class="ftr__list" data-rec="R-012,SM-R003,MA-R002">
+        <li><a class="ftr__link" href={`mailto:${email}`}>{email}</a></li>
+        {socials.map((s) => <li><a class="ftr__link" href={s.url} rel="noopener">{s.name} <span class="ftr__handle">{s.handle}</span></a></li>)}
+      </ul>
+    </div>
+
+    <div class="ftr__col">
+      <h2 class="ftr__h">На цій сторінці</h2>
+      <ul role="list" class="ftr__list">
+        {nav.map((n) => <li><a class="ftr__link" href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </div>
+
+    <div class="ftr__col">
+      <h2 class="ftr__h">Розділи сайту</h2>
+      <ul role="list" class="ftr__list">
+        {future.map((f) => <li><FutureLink note="Розділ у розробці">{f}</FutureLink></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="container ftr__base">
+    <p>© Стоматологічна клініка Dr.Kopytko</p>
+  </div>
+</footer>
+
+<style>
+  .ftr { border-top: var(--line); background: var(--color-bg); padding-top: var(--s-8); }
+  .ftr__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+  .ftr__logo { display: inline-block; justify-self: start; }
+  .ftr__logo img { width: 180px; height: auto; }
+  .ftr__logo:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 4px; }
+  .ftr__h { margin: 0 0 var(--s-1); font-size: var(--fs-small); font-weight: 600; color: var(--color-text-muted); }
+  .ftr__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .ftr__addr { display: block; font-size: var(--fs-small); color: var(--color-text-muted); margin-top: var(--s-1); }
+  .ftr__link { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; color: var(--color-text); text-decoration: underline; text-decoration-color: var(--color-border); text-underline-offset: 5px; text-decoration-thickness: 2px; }
+  .ftr__link:hover { text-decoration-color: var(--color-primary); }
+  .ftr__link:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .ftr__handle { color: var(--color-text-muted); font-size: var(--fs-small); }
+  .ftr__list :global(.future-link) { font-weight: 400; }
+  .ftr__base { margin-top: var(--s-6); padding-block: var(--s-3); border-top: var(--line); font-size: var(--fs-small); color: var(--color-text-muted); }
+  .ftr__base p { margin: 0; }
+
+  @media (min-width: 768px) {
+    .ftr__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 1024px) {
+    .ftr__grid { grid-template-columns: minmax(0, 1.2fr) repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+  }
+</style>

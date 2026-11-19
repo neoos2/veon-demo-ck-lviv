@@ -1,0 +1,72 @@
+/* Hallmark · shape: document-index · genre: editorial · theme: custom · job: book · idea: "Підписано доктором Копитком: люди, ціни й адреси, за які засновник відповідає особисто" · vibe: "чесний документ сімейної практики, світлий, людяний"
+ * paper: #FFFFFF · surface: absolute white (clinic rooms) · accent: #104C8D · display: Piazzolla · body: Fixel · hero: H1 на всю ширину, дві кнопки-клініки на верхньому краї панорами команди · nav: sticky white bar, 5 anchors + two phones; mobile call + labelled menu · footer: light four-column directory (clinics, write, on this page, future pages) under the client logo · imagery: client photos · signature: іменний покажчик лікарів зі стажем, який відкриває засновник, і темний аркуш прейскуранта з підписом
+ * axes: light/roman-serif/cool · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: imagery, only 2021–2022 client photos at 1563 px; used at native size with srcset, no stock */
+/* Hallmark · waive 7b · --color-bg #FFFFFF, --color-on-primary #FFFFFF · approved concept (design/concept.md §5 Look): pure white = the clinic's white rooms, and the client logo is a raster JPG on white (C-013) */
+/* Hallmark · waive 39b · clinic buttons 76-90px tall · each clinic button carries street, phone number and that clinic's Google rating (concept §5 "дві двері", ux/demo-home.md §10.1: 76px on phones) */
+/* Hallmark · waive 44c · hero ends near 1060px at 1440x900 · the panorama of the whole team sits under the clinic buttons uncropped (2.2:1) so no face is covered or cut; H1, the sentence and both phone buttons are above the fold at 1280x800 */
+/* Hallmark · answer 28a · the LCP is the hero team photo with fetchpriority=high; founder, microscope and footer logo are below the fold and stay lazy (R-011) */
+/* Hallmark · answer F20/F25 · service lists wrap by content length; on phones the list opens with a button and the price stays visible (concept §5, ux/demo-home.md §7) */
+/* Hallmark · answer F4 · .hdr__btn--call and .clinic-btn are one action (call a clinic): the header and bottom-bar buttons only open or repeat the choice of the two clinic buttons on phones */
+/* Client design tokens from design/concept.md (veon-concept: colors, fonts). */
+:root {
+  /* colour roles */
+  --color-bg: #FFFFFF;
+  --color-surface: #F1F4F8;
+  --color-text: #0F1B2D;
+  --color-text-muted: #4A5668;
+  --color-primary: #104C8D;
+  --color-primary-hover: #0B3A6E;
+  --color-on-primary: #FFFFFF;
+  --color-accent: #0EB0DA;
+  --color-deep: #0B2A4F;
+  --color-on-deep-muted: #B8C7DA;
+  --color-border: #D5DCE5;
+  --color-field-border: #6E7B8D;
+  --color-focus: var(--color-primary);
+  --color-scrim: #0F1B2DCC;
+
+  /* type */
+  --font-display: "Piazzolla", "Piazzolla Fallback", Georgia, serif;
+  --font-body: "Fixel", "Fixel Fallback", system-ui, sans-serif;
+  --fs-h1: clamp(2.375rem, 1.6rem + 3.6vw, 5.25rem);
+  --fs-h2: clamp(2rem, 1.6rem + 1.8vw, 3.25rem);
+  --fs-street: clamp(2.5rem, 1.8rem + 2.6vw, 4rem);
+  --fs-h3-lg: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  --fs-h3: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  --fs-lead: clamp(1.125rem, 1.08rem + 0.2vw, 1.25rem);
+  --fs-body: 1.125rem;
+  --fs-small: 0.9375rem;
+  --fs-phone: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+  --lh-tight: 1.08;
+  --lh-head: 1.15;
+  --lh-body: 1.55;
+
+  /* space (multiples of 8) */
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2rem;
+  --s-6: 3rem;
+  --s-8: 4rem;
+  --s-12: 6rem;
+  --s-16: 8rem;
+  --section-y: clamp(4rem, 2rem + 6vw, 8rem);
+  --space: clamp(1.25rem, 1.1rem + 0.4vw, 1.5rem);
+  --gap: 1.5rem;
+  --container: 1200px;
+  --header-h: 72px;
+
+  /* shape */
+  --radius: 4px;
+  --line: 1px solid var(--color-border);
+
+  /* motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur: 600ms;
+  --dur-fast: 160ms;
+}
+
+@media (max-width: 767px) {
+  :root { --header-h: 64px; }
+}

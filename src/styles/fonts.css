@@ -1,0 +1,32 @@
+/* Self-hosted variable fonts, subset latin + cyrillic (incl. Ґ Є І Ї ’ ₴). SIL OFL 1.1, licences next to the files. */
+@font-face {
+  font-family: "Piazzolla";
+  src: url("../assets/fonts/piazzolla-var.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fixel";
+  src: url("../assets/fonts/fixel-var.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+/* Metric-matched fallbacks to keep CLS at zero while the web fonts load. */
+@font-face {
+  font-family: "Piazzolla Fallback";
+  src: local("Georgia"), local("DejaVu Serif"), local("Times New Roman");
+  size-adjust: 100%;
+  ascent-override: 111%;
+  descent-override: 31%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fixel Fallback";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans"), local("DejaVu Sans");
+  size-adjust: 104%;
+  ascent-override: 87%;
+  descent-override: 18%;
+  line-gap-override: 0%;
+}
